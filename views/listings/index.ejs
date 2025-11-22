@@ -1,0 +1,253 @@
+<% layout('layouts/boilerplate') %>
+<%- include('../includes/flash') %>
+
+<!-- 🌎 Airbnb-style filter bar -->
+<div class="filter-scroll-container d-flex align-items-center justify-content-between mb-4 position-sticky top-0 bg-white py-3 px-2 shadow-sm rounded">
+  <button class="scroll-btn left-btn btn btn-light rounded-circle shadow-sm"><i class="bi bi-chevron-left"></i></button>
+
+  <div class="filter-scroll d-flex overflow-auto flex-nowrap gap-4 px-3">
+    <div class="filter-item active" data-category="">
+      <i class="fa-solid fa-earth-americas"></i>
+      <span>All</span>
+    </div>
+    <div class="filter-item" data-category="cottage">
+      <i class="fa-solid fa-cow"></i>
+      <span>cottage</span>
+    </div>
+    <div class="filter-item" data-category="beach">
+      <i class="fa-solid fa-umbrella-beach"></i>
+      <span>Beach</span>
+    </div>
+    <div class="filter-item" data-category="villa">
+      <i class="fa-solid fa-people-roof"></i>
+      <span>Villa</span>
+    </div>
+    <div class="filter-item" data-category="apartment">
+      <i class="fa-solid fa-building"></i>
+      <span>Apartments</span>
+    </div>
+    <div class="filter-item" data-category="mountain">
+      <i class="fa-solid fa-mountain-sun"></i>
+      <span>Mountain</span>
+    </div>
+    <div class="filter-item" data-category="luxury">
+      <i class="fa-brands fa-phoenix-framework"></i>
+      <span>Luxury</span>
+    </div>
+    <div class="filter-item" data-category="city">
+      <i class="fa-solid fa-city"></i>
+      <span>city</span>
+    </div>
+    <div class="filter-item" data-category="historic">
+      <i class="fa-brands fa-fort-awesome"></i>
+      <span>Historic</span>
+    </div>
+    <div class="filter-item" data-category="treehouse">
+      <i class="fa-solid fa-tree-city"></i>
+      <span>Treehouse</span>
+    </div>
+    <div class="filter-item" data-category="cabin">
+      <i class="fa-solid fa-person-booth"></i>
+      <span>Cabin</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-3">
+    <button class="scroll-btn right-btn btn btn-light rounded-circle shadow-sm">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+
+    <div class="airbnb-toggle-group">
+      <label class="switch">
+        <input type="checkbox" id="flexSwitchCheckDefault">
+        <span class="slider"></span>
+      </label>
+      <span class="toggle-text">Display total after taxes</span>
+    </div>
+  </div>
+</div>
+
+<div class="container my-4">
+
+  <!-- 🔴 SHOW “NO RESULTS FOUND” -->
+  <% if (noResults) { %>
+    <div class="alert alert-danger text-center mt-4">
+      ❌ No results found for "<%= query %>"
+    </div>
+  <% } %>
+
+  <!-- 🏘️ Responsive grid -->
+  <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+    <% allListings.forEach(listing => { %>
+      <div class="col">
+        <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm border-0">
+            <img 
+              src="<%= listing.image.url %>" 
+              class="card-img-top" 
+              alt="<%= listing.image.filename %>" 
+              style="height: 20rem; object-fit: cover;"
+            >
+            <div class="card-img-overlay">
+             ABCD
+            </div>
+            <div class="card-body">
+              <h5 class="card-title fw-semibold"><%= listing.title %></h5>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <span 
+                  class="fw-bold text-success price" 
+                  data-base="<%= listing.price %>"
+                >
+                &#8377; <%= listing.price.toLocaleString("en-IN") %></span>/ night
+                <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
+              </li>
+            </ul>
+          </div>
+        </a>
+      </div>
+    <% }) %>
+  </div> 
+</div>
+
+<!-- ⭐ Inspiration Section -->
+<div class="inspiration-tabs">
+
+<div class="container my-5">
+  <h2 class="fw-bold mb-3">Inspiration for future getaways</h2>
+
+  <!-- Tabs -->
+  <div class="d-flex gap-4 border-bottom pb-2 mb-4 inspiration-tabs">
+    <span class="tab" data-tab="popular">Popular</span>
+    <span class="tab" data-tab="arts">Arts & culture</span>
+    <span class="tab" data-tab="beach">Beach</span>
+    <span class="tab" data-tab="mountain">Mountains</span>
+    <span class="tab" data-tab="outdoors">Outdoors</span>
+  </div>
+
+  <!-- Content -->
+  <div id="inspiration-grid" class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-4">
+    <% popular.forEach(d => { %>
+      <div class="col inspiration-item" data-category="<%= d.category %>">
+        <a 
+          href="/listings/country/<%= d.country.toLowerCase().replace(/ /g, '-') %>" 
+          class="text-decoration-none text-dark fw-semibold"
+          style="cursor:pointer;">
+          <%= d.country %>
+        </a>
+        <p class="text-muted"><%= d.title %></p>
+      </div>
+    <% }) %>
+  </div>
+</div>
+</div>
+
+
+<script>
+
+  // ⭐ Tab switching logic
+  const tabs = document.querySelectorAll(".tab");
+  const items = document.querySelectorAll(".inspiration-item");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+
+      document.querySelector(".tab.active")?.classList.remove("active");
+      tab.classList.add("active");
+
+      const target = tab.dataset.tab;
+
+      // Show/hide items
+      items.forEach(item => {
+        if (target === "popular" || item.dataset.category === target) {
+          item.classList.remove("d-none");
+        } else {
+          item.classList.add("d-none");
+        }
+      });
+
+    });
+  });
+
+
+  // -------- Filter Bar Logic ----------
+  const scrollContainer = document.querySelector('.filter-scroll');
+  const leftBtn = document.querySelector('.left-btn');
+  const rightBtn = document.querySelector('.right-btn');
+  const filterItems = document.querySelectorAll('.filter-item');
+  const cols = document.querySelectorAll('.col');
+
+  leftBtn.addEventListener('click', () => {
+    scrollContainer.scrollBy({ left: -200, behavior: 'smooth' });
+  });
+  rightBtn.addEventListener('click', () => {
+    scrollContainer.scrollBy({ left: 200, behavior: 'smooth' });
+  });
+
+  filterItems.forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelector('.filter-item.active')?.classList.remove('active');
+      item.classList.add('active');
+      const category = item.dataset.category;
+
+      cols.forEach(col => {
+        const title = col.querySelector('.card-title').textContent.toLowerCase();
+        const description = col.querySelector('.card-text')?.textContent.toLowerCase() || "";
+        const combinedText = `${title} ${description}`;
+
+        if (!category || combinedText.includes(category.toLowerCase())) {
+          col.classList.remove('d-none');
+        } else {
+          col.classList.add('d-none');
+        }
+      });
+    });
+  });
+
+  const taxToggle = document.getElementById('flexSwitchCheckDefault');
+
+  taxToggle.addEventListener('change', () => {
+    const taxInfoElements = document.querySelectorAll('.tax-info');
+    const priceElements = document.querySelectorAll('.price');
+
+    priceElements.forEach((priceEl, index) => {
+      let basePrice = parseFloat(priceEl.dataset.base);
+
+      if (taxToggle.checked) {
+        let totalPrice = (basePrice * 1.18).toFixed(2);
+        priceEl.innerHTML = `&#8377; ${parseFloat(totalPrice).toLocaleString("en-IN")}`;
+        taxInfoElements[index].textContent = " (including 18% GST)";
+      } else {
+        priceEl.innerHTML = `&#8377; ${basePrice.toLocaleString("en-IN")}`;
+        taxInfoElements[index].textContent = " +18% GST";
+      }
+    });
+  });
+
+
+  // -------- Inspiration Tab Filter ----------
+const inspoTabs = document.querySelectorAll("#inspoTabs .nav-link");
+const countryItems = document.querySelectorAll(".country-item");
+
+inspoTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+
+    document.querySelector("#inspoTabs .active")?.classList.remove("active");
+    tab.classList.add("active");
+
+    const filter = tab.dataset.filter;
+
+    countryItems.forEach(item => {
+      if (filter === "all") {
+        item.classList.remove("d-none");
+      } else if (item.dataset.name.includes(filter)) {
+        item.classList.remove("d-none");
+      } else {
+        item.classList.add("d-none");
+      }
+    });
+  });
+});
+
+</script>

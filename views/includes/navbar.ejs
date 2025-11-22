@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom sticky-top shadow">
+  <div class="container-fluid">
+
+    <!-- LEFT -->
+    <a class="navbar-brand">
+      <i class="fa-solid fa-compass"></i> WanderLust
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+      <!-- LEFT NAV LINKS -->
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+
+      <!-- CENTER SEARCH BAR -->
+      <div class="navbar-center">
+          <form class="d-flex search-form" action="/listings/search" method="GET">
+          <input class="form-control me-2 search-input"
+          name="q" 
+          type="search" 
+           placeholder="Search Destinations" 
+           aria-label="Search">
+          <button class="btn-search search-button" type="submit">Search </button>
+        </form>
+      </div>
+
+      <!-- RIGHT NAV LINKS -->
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">Add new listings</a>
+
+        <% if(!currentUser) { %>
+          <a class="nav-link" href="/users/signup"><b>Signup</b></a>
+          <a class="nav-link" href="/users/login"><b>Login</b></a>
+        <% } %>
+
+        <% if(currentUser) { %>
+          <a class="nav-link" href="/users/logout">Logout</a>
+        <% } %>
+      </div>
+
+    </div>
+  </div>
+</nav>

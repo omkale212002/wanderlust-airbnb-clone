@@ -1,0 +1,191 @@
+<% layout('layouts/boilerplate') %>
+<%- include('../includes/flash') %>
+<script>
+  const mapToken = '<%= process.env.MAPBOX_TOKEN %>';
+  const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+</script>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="card shadow-sm ">
+        <img 
+          src="<%= listing.image.url %>" 
+          alt="<%= listing.image.filename %>" 
+          class="card-img-top"
+          style="height: 20rem; object-fit: cover; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem;"
+        >
+
+        <div class="card-body">
+          <p>
+            <i>Hosted by : </i><%= listing.owner.username %>
+          </p>
+            <h3 class="card-title fw-bold mb-3"><%= listing.title %></h3>
+          <p class="card-text text-muted mb-2"><%= listing.description %></p>
+
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item">
+              <strong>Price:</strong> ₹<%= listing.price.toLocaleString("en-IN") %> / night
+            </li>
+            <li class="list-group-item">
+              <strong>Location:</strong> <%= listing.location %>
+            </li>
+            <li class="list-group-item">
+              <strong>Country:</strong> <%= listing.country %>
+            </li>
+          </ul>
+
+          <% if (currentUser && currentUser._id.equals(listing.owner._id)) { %>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning">Edit</a>
+
+            <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+          <% } %>
+
+          <a href="/listings" class="btn btn-outline-secondary w-100 mt-3">Back to Listings</a>
+        </div>
+      </div>
+
+      <button id="payNow" class="btn btn-primary w-100 mt-3">
+  <i class="fa-solid fa-credit-card"></i> Pay Now
+</button>
+
+
+    </div>
+  </div>
+
+  <hr/>
+  
+  <!-- Review Section -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="fw-bold mb-4 text-center">Leave a Review</h4>
+
+          <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+            <div class="mb-3">
+              <label for="rating" class="form-label fw-semibold">Rating</label>
+              <input 
+                type="range" 
+                min="1" 
+                max="5" 
+                step="1" 
+                id="rating" 
+                name="review[rating]" 
+                value="3"
+                class="form-range"
+                oninput="document.getElementById('ratingValue').textContent = this.value"
+              >
+              <div class="text-center mt-1">
+                <span class="badge bg-primary fs-6" id="ratingValue">3</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="comment" class="form-label fw-semibold">Comment</label>
+              <textarea 
+                name="review[comment]"
+                id="comment"
+                cols="30"
+                rows="4"
+                placeholder="Write your review here..."
+                class="form-control"
+                required
+              ></textarea>  
+              <div class="invalid-feedback"> Please enter a comment for your review.</div>    
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Submit Review</button>
+          </form>
+          
+          <hr/>
+
+          <!-- All Reviews -->
+          <hr class="my-5" />
+          <h4 class="fw-bold mb-4 text-center text-primary">All Reviews</h4>
+
+          <% if (listing.reviews.length === 0) { %>
+            <p class="text-center text-muted">No reviews yet. Be the first to write one!</p>
+          <% } else { %>
+            <div class="row justify-content-center">
+              <% listing.reviews.forEach((review, index) => { %>
+                <div class="col-md-6 mb-4">
+                  <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= review.author.username %></h5>
+                      <h5 class="card-title text-warning mb-2">
+                        ⭐ <%= review.rating %> / 5
+                      </h5>
+                      <p class="card-text text-secondary mb-0">
+                        <%= review.comment %>
+                      </p>
+                      <small class="text-muted d-block mt-2">
+                        <i class="bi bi-clock"></i>
+                        <%= new Date(review.createdAt).toLocaleDateString() %>
+                      </small>
+                      <form  method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                        <button class ="btn btn-danger mt-3">DELETE</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <% if ((index + 1) % 2 === 0) { %>
+                  <div class="w-100"></div> <!-- New row after 2 reviews -->
+                <% } %>
+              <% }); %>
+            </div>
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8 offset-2">
+  <h3>Where you will be</h3>
+  <div id="map"></div>
+</div>
+
+</div>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+document.getElementById("payNow").onclick = async function () {
+  
+  const amount = <%= listing.price %>; // Listing price from DB
+
+  // Create an order from backend
+  const res = await fetch("/create-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount })
+  });
+
+  const order = await res.json();
+
+  const options = {
+    key: "<%= process.env.RAZORPAY_KEY_ID %>",
+    amount: order.amount,
+    currency: "INR",
+    name: "WanderLust Booking",
+    description: "Booking Payment",
+    order_id: order.id,
+
+    prefill: {
+      name: "<%= currentUser ? currentUser.username : '' %>",
+      email: "<%= currentUser ? currentUser.email : '' %>"
+    },
+
+    handler: function (response) {
+      alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+    }
+  };
+
+  const razor = new Razorpay(options);
+  razor.open();
+}
+</script>
+
+ <script src="/js/map.js"></script>

@@ -1,0 +1,443 @@
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+/* GLOBAL LAYOUT FIX */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Wrapper for flex-based layout */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* full viewport height */
+}
+
+/* Content should expand to push footer down */
+.main-content {
+  flex: 1;
+}
+
+/* Font setup (keep yours) */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.container {
+    flex: 1; /* take all remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    background-color: rgb(237, 237, 237);
+    text-align: center;
+    padding: 1rem 0;
+}
+
+
+.navbar{
+    height: 5rem;
+}
+.fa-compass{
+    font-size: 2rem;
+    color: #ff385c;
+    margin-right: 0.5rem;
+    
+}
+.nav-link{
+    color: black important;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.navbar-brand{
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.f-info-links a{
+    text-decoration: none;
+    color: black;
+    vertical-align: middle;
+}
+.f-info-links a:hover {
+    text-decoration:underline;
+}
+.f-info {
+    text-align: center;
+    display: flex;
+    height: 5rem;
+    background-color:rgb(237, 237, 237);
+    justify-content: center;
+    align-items: space-evenly;
+    flex-wrap: wrap;
+}
+.f-info-links,
+.f-info-social,
+.f-info-brand {
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;    
+}
+
+.f-info-social{
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; 
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+/* === Compact Card Style === */
+
+.card {
+  border: none !important;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+/* Smaller image height */
+.card-img-top {
+  width: 100% !important;
+  height: 15rem !important;      /* ⬅ reduces card height */
+  object-fit: cover !important;
+  border-radius: 1rem !important;
+}
+
+/* Compact card body */
+.card-body {
+  padding: 0.7rem 0.8rem !important;
+  flex: none !important;
+}
+
+/* Title */
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+/* Description (location) */
+.card-text {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 0.3rem;
+}
+
+/* Price section */
+.list-group-item {
+  font-size: 0.85rem;
+  padding: 0.6rem 0.9rem;
+}
+
+/* GST small text */
+.tax-info {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+/* Hide overlay unless needed */
+.card-img-overlay {
+  opacity: 0;
+}
+
+.card-img-overlay:hover {
+  opacity: 0.3;
+  
+  background-color: rgba(241, 247, 252, 0.797);
+}
+
+
+.font-small {
+  font-size: 0.8rem; /* ~12.8px */
+}
+
+.font-medium {
+  font-size: 1rem;   /* 16px */
+}
+
+.font-large {
+  font-size: 1.5rem; /* 24px */
+}
+
+/*mapbox*/
+#map {
+  width: 100%;
+  height: 50vh;
+}
+
+.filter-scroll-container {
+  overflow: hidden;
+  position: sticky;
+  top: 70px;
+  z-index: 1000;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-scroll {
+  scroll-behavior: smooth;
+}
+
+.filter-item {
+  flex: 0 0 auto;
+  text-align: center;
+  color: #717171;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  min-width: 80px;
+}
+
+.filter-item i {
+  display: block;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  color: #717171;
+}
+
+.filter-item.active i,
+.filter-item.active span {
+  color: #ff385c;
+}
+
+.filter-item:hover {
+  transform: scale(1.1);
+  color: #ff385c
+}
+
+.scroll-btn {
+  background: white;
+  border: none;
+  z-index: 1001;
+  opacity: 0.9;
+}
+
+.scroll-btn:hover {
+  background-color: #f7f7f7;
+}
+
+/* Hide scrollbars but keep scroll functionality */
+.filter-scroll {
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer / Edge */
+}
+
+/* For Chrome, Safari, and Opera */
+.filter-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tax info initially hidden */
+
+
+/* Hide default checkbox */
+.switch input {
+  display: none;
+}
+
+/* Slider background */
+.switch {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  display: inline-block;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  border-radius: 34px;
+  transition: 0.3s ease;
+}
+
+/* Slider circle */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+/* When ON */
+.switch input:checked + .slider {
+  background-color: #ff385c;  /* Airbnb pink */
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+/* Hover effect */
+.slider:hover {
+  background-color: #914040;
+}
+
+/* ON hover glow */
+.switch input:checked + .slider:hover {
+  background-color:  #ff385c;
+}
+
+/* Toggle group container */
+.airbnb-toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  margin-left: auto; /* Push to right side */
+  padding: 6px 12px;            /* spacing inside */
+  border: 2px solid #afafaf;       /* thin border */
+  border-radius: 25px;          /* rounded pill shape */
+  background: #fff;  
+}
+
+/* Responsive text hide on small screens */
+@media (max-width: 768px) {
+  .toggle-text {
+    display: none;
+  }
+}
+
+/* Search button styling */
+.btn-search {
+    background-color: #ff385c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px; 
+    display: inline;
+    border-radius: 25px;
+      
+}
+.btn-search:hover {
+    background-color:#ff385c;
+    color: white;
+}
+.navbar-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+.search-button {
+ border-radius: 25px;
+}
+
+/* Inspiration section */
+
+.inspiration-tabs .tab {
+  cursor: pointer;
+  padding-bottom: 0.5rem;
+  font-weight: 500;
+  color: #717171;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+.inspiration-tabs .tab.active {
+  color: #ff385c;
+  border-bottom: 2px solid #ff385c;
+
+}
+.inspiration-tabs .tab:hover {
+  color: #ff385c;
+}
+
+
+/* county section */
+
+.hero-img {
+  border-radius: 25px;
+}
+
+.hero-search-box {
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  bottom: 30px;
+  width: 437px;
+  border-radius: 25px;
+  
+}
+
+@media (max-width: 768px) {
+  .hero-search-box {
+    position: static;
+    width: 100%;
+    margin-top: -50px;
+    box-shadow: #595959;
+  }
+}
+.country-listing-text {
+  text-align: center;
+}
+
+
+
+
+
+/* Smaller Airbnb-style card */
+.airbnb-card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.airbnb-card:hover {
+  transform: scale(1.02);
+}
+
+/* card image in country section */
+/* Smaller image height */
+.airbnb-img {
+  height: 12rem;    /* reduced from 18rem → Airbnb-like */
+  object-fit: cover;
+}
+
+/* Cleaner title */
+.airbnb-title {
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+/* Smaller price text */
+.airbnb-price {
+  font-size: 0.95rem;
+}
+
+/* Text size tweaks */
+.airbnb-card p {
+  font-size: 0.85rem;
+}
+
+
+
+
+
+
+
+

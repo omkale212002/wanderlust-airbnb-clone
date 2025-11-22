@@ -1,0 +1,66 @@
+<% layout('layouts/boilerplate') %>
+
+<!-- HERO SECTION -->
+<div class="container mt-5 position-relative">
+
+  <!-- Hero Image full width like Airbnb -->
+  <img src="<%= heroImage %>"
+       class="img-fluid rounded-4 shadow hero-img"
+       style="width: 100%; height: 480px; object-fit: cover;">
+
+  <!-- Overlapping Search Box -->
+  <div class="hero-search-box shadow bg-white rounded-4 p-4">
+    <h1 class="fw-bold">Holiday rentals in <%= titleCase %></h1>
+    <p class="text-muted">Find and book unique accommodation on Wanderlust</p>
+
+    <label class="fw-bold mt-3">Location</label>
+    <input class="form-control mb-3" value="<%= titleCase %>">
+
+    <div class="row">
+      <div class="col-6">
+        <label class="fw-bold">Check in</label>
+        <input class="form-control" placeholder="Add dates">
+      </div>
+      <div class="col-6">
+        <label class="fw-bold">Check out</label>
+        <input class="form-control" placeholder="Add dates">
+      </div>
+    </div>
+
+    <button class="btn btn-danger w-100 mt-3 rounded-pill">
+        <i class="fa-solid fa-search"></i> Search
+    </button>
+  </div>
+
+</div>
+
+<!-- LISTINGS SECTION -->
+<div class="container my-5">
+  <h3 class="fw-bold mb-3 country-listing-text">Top-rated holiday rentals in <%= titleCase %></h3>
+  <p class="text-muted mb-4 country-listing-text">Guests agree: these stays are highly rated for location, cleanliness and more.</p>
+
+  <% if (noListings) { %>
+    <div class="alert alert-warning">No listings found for this country</div>
+  <% } %>
+
+  <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+    <% listings.forEach(listing => { %>
+      <div class="col">
+  <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+    <div class="card shadow-sm border-0 rounded-4 airbnb-card">
+      <img src="<%= listing.image.url %>" 
+           class="card-img-top airbnb-img">
+
+      <div class="card-body p-2">
+        <h6 class="fw-semibold mb-1 airbnb-title"><%= listing.title %></h6>
+        <p class="text-muted small mb-1"><%= listing.location %>, <%= listing.country %></p>
+        <p class="fw-bold mb-1 airbnb-price">₹ <%= listing.price %> <span class="small text-muted">night</span></p>
+      </div>
+    </div>
+  </a>
+</div>
+
+    <% }) %>
+  </div>
+
+</div>
