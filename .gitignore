@@ -1,1 +1,2 @@
-git push
+node_modules/
+.env
