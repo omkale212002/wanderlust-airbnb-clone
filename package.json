@@ -10,8 +10,9 @@
   "license": "ISC",
   "description": "WanderLust Airbnb Clone - Node.js, Express, MongoDB, EJS, Cloudinary, Mapbox, Razorpay",
   "engines": {
-    "node": "18.x"
-  },
+  "node": ">=20.17.0"
+}
+,
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.16.2",
     "cloudinary": "^1.37.2",
